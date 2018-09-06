@@ -16,17 +16,19 @@ class Blog extends Component {
         axios.get('https://jsonplaceholder.typicode.com/posts')
             .then(response => {
                 //console.log(response);
-                this.setState({posts: response.data});
+                this.setState({ posts: response.data });
             });
     }
 
     render() {
+        const post = this.state.posts.map(post => {
+            return <Post key={post.id} title={post.title} />;
+        });
+
         return (
             <div>
                 <section className="Posts">
-                    <Post />
-                    <Post />
-                    <Post />
+                    {post}
                 </section>
                 <section>
                     <FullPost />
