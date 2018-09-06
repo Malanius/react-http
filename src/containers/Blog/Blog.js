@@ -9,7 +9,8 @@ import './Blog.css';
 class Blog extends Component {
 
     state = {
-        posts: []
+        posts: [],
+        selectedPostId: null
     }
 
     componentDidMount() {
@@ -18,7 +19,7 @@ class Blog extends Component {
                 //console.log(response);
                 const posts = response.data.slice(0, 4);
                 const updatedPosts = posts.map(post => {
-                    return{
+                    return {
                         ...post,
                         author: 'Mal'
                     }
@@ -27,9 +28,18 @@ class Blog extends Component {
             });
     }
 
+    postClickHandler = (selectedId) => {
+        this.setState({ selectedPostId: selectedId });
+    }
+
     render() {
         const post = this.state.posts.map(post => {
-            return <Post key={post.id} title={post.title} author={post.author}/>;
+            return <Post
+                key={post.id}
+                title={post.title}
+                author={post.author}
+                clicked={() => this.postClickHandler(post.id)}
+            />;
         });
 
         return (
@@ -38,7 +48,7 @@ class Blog extends Component {
                     {post}
                 </section>
                 <section>
-                    <FullPost />
+                    <FullPost id={this.state.selectedPostId} />
                 </section>
                 <section>
                     <NewPost />
